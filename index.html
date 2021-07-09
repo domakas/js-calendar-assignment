@@ -13,28 +13,88 @@
 <body>
     <header class="header">
         <nav class="navigation">
-            <ul>
-                <li class="navigation__item--hamburger">
+            <ul class="navigation__item--left">
+                <li class="navigation__item--left--hamburger">
                     <a href="#" onclick="alert('There is no script atm')"><img src="./images/hamburger.png"></a>
                 </li>
-                <li class="navigation__item--name"><a href="#">Calendar</a></li>
-                <li class="navigation__item--today"><a href="#">Today</a></li>
-                <li class="navigation__item--arrow--left">
+                <li class="navigation__item--left--name">
+                    <a href="#">
+                        <h1>Calendar</h1>
+                    </a>
+                </li>
+            </ul>
+            <ul class="navigation__item--center">
+                <li class="navigation__item--center--today"><button>Today</button></li>
+                <li class="navigation__item--center--arrow-left">
                     <a href="#"><img src="./images/left.png"></a>
                 </li>
-                <li class="navigation__item--arrow--right">
+                <li class="navigation__item--arrow-right">
                     <a href="#"><img src="./images/right.png"></a>
                 </li>
-                <li class="navigation__item--month">July 2021</li>
-                <li class="navigation__item--layout">Week</li>
+                <li class="navigation__item--center--month">July 2021</li>
             </ul>
+            <button class="navigation__item--right--layout">Week</button>
         </nav>
     </header>
     <main class="main">
-        <div class="main__button-container">
-            <button class="main__button--create">Create Event</button>
-        </div>
-        <section class="main__calendar"></section>
+        <aside class="sidebar">
+            <button class="button--create">Create Event</button>
+            <section class="calendar">
+                <h3 class="calendar__date">July 2021</h3>
+                <nav class="calendar__navigation">
+                    <ul>
+                        <li class="calendar__arrow-left">
+                            <a href="#"><img src="./images/left.png"></a>
+                        </li>
+                        <li class="calendar__arrow-right">
+                            <a href="#"><img src="./images/right.png"></a>
+                        </li>
+                    </ul>
+                </nav>
+                <ul class="calendar__weekdays">
+                    <li>M</li>
+                    <li>T</li>
+                    <li>W</li>
+                    <li>T</li>
+                    <li>F</li>
+                    <li>S</li>
+                    <li>S</li>
+                </ul>
+                <ul class="calendar__monthdays">
+                    <li>1</li>
+                    <li>2</li>
+                    <li>3</li>
+                    <li>4</li>
+                    <li>5</li>
+                    <li>6</li>
+                    <li>7</li>
+                    <li>8</li>
+                    <li>9</li>
+                    <li>10</li>
+                    <li>11</li>
+                    <li>12</li>
+                    <li>13</li>
+                    <li>14</li>
+                    <li>15</li>
+                    <li>16</li>
+                    <li>17</li>
+                    <li>18</li>
+                    <li>19</li>
+                    <li>20</li>
+                    <li>21</li>
+                    <li>22</li>
+                    <li>23</li>
+                    <li>24</li>
+                    <li>25</li>
+                    <li>26</li>
+                    <li>27</li>
+                    <li>28</li>
+                    <li>29</li>
+                    <li>30</li>
+                    <li>31</li>
+                </ul>
+            </section>
+        </aside>
     </main>
 </body>
 

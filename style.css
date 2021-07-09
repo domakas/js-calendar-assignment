@@ -1,0 +1,77 @@
+body {
+    margin: 0;
+    font-family: ProductSans, sans-serif;
+}
+
+@font-face {
+    font-family: ProductSans;
+    src: url(./font/Product\ Sans\ Regular.ttf);
+}
+
+.header {
+    border-bottom: 1px solid lightgrey;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:visited {
+    color: inherit;
+}
+
+.navigation {
+    max-height: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 50px;
+}
+
+.navigation__item--left,
+.navigation__item--center {
+    list-style-type: none;
+}
+
+.navigation__item--left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.navigation__item--left--hamburger img {
+    margin-right: 40px;
+    height: 24px;
+}
+
+.navigation__item--left--name {
+    color: grey;
+    justify-items: center;
+    margin-right: 40px;
+}
+
+.navigation__item--center {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.navigation__item--center--today {
+    margin-right: 40px;
+}
+
+.navigation__item--center--arrow-left,
+.navigation__item--center--arrow-right {
+    margin-right: 10px;
+}
+
+.navigation__item--center--month {
+    font-size: 22px;
+    margin-left: 20px;
+    margin-right: 20px;
+    white-space: nowrap;
+}
+
+.navigation__item--right--layout {
+    margin-left: auto;
+}
