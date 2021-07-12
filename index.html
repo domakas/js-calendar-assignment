@@ -24,11 +24,11 @@
                 </li>
             </ul>
             <ul class="navigation__item--center">
-                <li class="navigation__item--center--today"><button>Today</button></li>
-                <li class="navigation__item--center--arrow-left">
+                <li><button class="navigation__item--center--today">Today</button></li>
+                <li class="navigation__item--center--arrow--left">
                     <a href="#"><img src="./images/left.png"></a>
                 </li>
-                <li class="navigation__item--arrow-right">
+                <li class="navigation__item--arrow--right">
                     <a href="#"><img src="./images/right.png"></a>
                 </li>
                 <li class="navigation__item--center--month">July 2021</li>
@@ -40,17 +40,19 @@
         <aside class="sidebar">
             <button class="button--create">Create Event</button>
             <section class="calendar">
-                <h3 class="calendar__date">July 2021</h3>
-                <nav class="calendar__navigation">
-                    <ul>
-                        <li class="calendar__arrow-left">
-                            <a href="#"><img src="./images/left.png"></a>
-                        </li>
-                        <li class="calendar__arrow-right">
-                            <a href="#"><img src="./images/right.png"></a>
-                        </li>
-                    </ul>
-                </nav>
+                <header class="calendar__header">
+                    <h3 class="calendar__date">July 2021</h3>
+                    <nav class="calendar__navigation">
+                        <ul class="calendar__arrows">
+                            <li class="calendar__arrow--left">
+                                <a href="#"><img src="./images/left.png"></a>
+                            </li>
+                            <li class="calendar__arrow--right">
+                                <a href="#"><img src="./images/right.png"></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </header>
                 <ul class="calendar__weekdays">
                     <li>M</li>
                     <li>T</li>
@@ -95,6 +97,28 @@
                 </ul>
             </section>
         </aside>
+        <section class="grid">
+            <header class="grid__header">
+                <ul class="grid__header__weekdays">
+                    <li>MON</li>
+                    <li>TUE</li>
+                    <li>WED</li>
+                    <li>THU</li>
+                    <li>FRI</li>
+                    <li>SAT</li>
+                    <li>SUN</li>
+                </ul>
+                <ul class="grid__header__days">
+                    <li>24</li>
+                    <li>25</li>
+                    <li>26</li>
+                    <li>27</li>
+                    <li>28</li>
+                    <li>29</li>
+                    <li>30</li>
+                </ul>
+            </header>
+        </section>
     </main>
 </body>
 
