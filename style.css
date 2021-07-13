@@ -1,6 +1,11 @@
+html,
 body {
+    display: flex;
+    max-height: 100vh;
     margin: 0;
     font-family: ProductSans, sans-serif;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 @font-face {
@@ -105,10 +110,16 @@ a:visited {
 }
 
 .main {
+    width: auto;
+    min-width: 965px;
     display: flex;
+    flex-grow: 1;
+    overflow: hidden;
 }
 
 .sidebar {
+    margin-left: -15px;
+    margin-right: -20px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -140,6 +151,7 @@ a:visited {
 .calendar__header {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
 
 .calendar__date {
@@ -150,12 +162,15 @@ a:visited {
 
 .calendar__arrows {
     display: flex;
-    padding-left: 90px;
+}
+
+.calendar__arrow--left,
+.calendar__arrow--right {
+    border-radius: 50%;
 }
 
 .calendar__arrow--left:hover,
 .calendar__arrow--right:hover {
-    border-radius: 50%;
     background-color: rgb(241, 241, 241);
 }
 
@@ -174,19 +189,80 @@ a:visited {
     font-size: 12px;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-rows: auto;
     padding-left: 0;
     grid-column-gap: 0px;
     grid-row-gap: 10px;
     justify-items: center;
 }
 
-.grid {}
+.grid {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 100%;
+}
 
-.grid__header {}
+.grid__header {
+    display: flex;
+    flex-direction: column;
+}
 
 .grid__header__weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(1, 1fr);
+    color: grey;
+    justify-items: center;
+    font-size: 12px;
+}
+
+.grid__header__monthdays {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(7, 1fr);
+    color: grey;
+    font-size: 22px;
+    margin-top: 0;
+}
+
+.grid__events {
+    overflow: auto;
+    display: flex;
+    margin-left: 30px;
+}
+
+.events__main {
+    display: grid;
+    grid-template-columns: repeat(7, 200px);
+    grid-template-rows: repeat(23, 60px);
+    margin-left: -15px;
+}
+
+.events__main::before {
+    content: "";
+    border: 1px solid black;
+}
+
+.grid__events__sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar__gmt {
+    position: absolute;
+    top: 120px;
+    left: 240px;
+    font-size: 12px;
+    color: grey;
+}
+
+.sidebar__time {
+    display: grid;
+    grid-template-columns: 50px;
+    grid-template-rows: repeat(23, 60px);
+    flex-direction: column;
+    max-width: 50px;
+    font-size: 12px;
+    color: grey;
+    padding: 0;
 }
