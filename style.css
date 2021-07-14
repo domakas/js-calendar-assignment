@@ -119,7 +119,6 @@ a:visited {
 
 .sidebar {
     margin-left: -15px;
-    margin-right: -20px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -214,6 +213,18 @@ a:visited {
     color: grey;
     justify-items: center;
     font-size: 12px;
+    margin-bottom: 0;
+    padding-left: 50px;
+    padding-right: 14px;
+}
+
+.grid__header__monthdays li {
+    width: 100%;
+    text-align: center;
+    border-width: 0px 1px 0px 1px;
+    border-image: linear-gradient(white 60%, lightgrey 40%) 1;
+    border-style: solid;
+    border-right: none;
 }
 
 .grid__header__monthdays {
@@ -223,46 +234,66 @@ a:visited {
     color: grey;
     font-size: 22px;
     margin-top: 0;
+    margin-bottom: 0px;
+    padding-left: 50px;
+    padding-right: 14px;
 }
 
 .grid__events {
-    overflow: auto;
     display: flex;
-    margin-left: 30px;
+    overflow: auto;
+    overflow-x: hidden;
 }
 
 .events__main {
+    width: 100%;
+    height: 100%;
     display: grid;
-    grid-template-columns: repeat(7, 200px);
-    grid-template-rows: repeat(23, 60px);
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(24, 50px);
     margin-left: -15px;
-}
-
-.events__main::before {
-    content: "";
-    border: 1px solid black;
 }
 
 .grid__events__sidebar {
     display: flex;
     flex-direction: column;
+    margin-left: 0px;
+    margin-right: 15px;
 }
 
 .sidebar__gmt {
     position: absolute;
-    top: 120px;
-    left: 240px;
+    top: 93px;
+    left: 248px;
     font-size: 12px;
     color: grey;
+    background-color: white;
+    border: 1px solid lightgrey;
+    border-width: 0px 0px 1px 0px;
+    border-image: linear-gradient(to right, transparent 20%, lightgrey) 1;
 }
 
 .sidebar__time {
     display: grid;
     grid-template-columns: 50px;
-    grid-template-rows: repeat(23, 60px);
+    grid-template-rows: repeat(23, 50px);
     flex-direction: column;
+    margin-top: 25px;
     max-width: 50px;
     font-size: 12px;
     color: grey;
     padding: 0;
+    align-items: center;
+}
+
+.events__item {
+    border: 1px solid lightgrey;
+    border-bottom: none;
+    border-right: none;
+}
+
+.sidebar__time li {
+    border: solid lightgrey;
+    border-width: 0px 10px 0px 0px;
+    border-image: linear-gradient(to bottom, white 48%, lightgrey, white 52%) 1;
 }
