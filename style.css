@@ -225,6 +225,7 @@ a:visited {
     border-image: linear-gradient(white 60%, lightgrey 40%) 1;
     border-style: solid;
     border-right: none;
+    padding: 10px 0px 10px 0px;
 }
 
 .grid__header__monthdays {
@@ -232,7 +233,7 @@ a:visited {
     justify-items: center;
     grid-template-columns: repeat(7, 1fr);
     color: grey;
-    font-size: 22px;
+    font-size: 26px;
     margin-top: 0;
     margin-bottom: 0px;
     padding-left: 50px;
@@ -263,7 +264,7 @@ a:visited {
 
 .sidebar__gmt {
     position: absolute;
-    top: 93px;
+    top: 118px;
     left: 248px;
     font-size: 12px;
     color: grey;
