@@ -125,7 +125,7 @@ a:visited {
 }
 
 .button--create {
-    margin: 20px;
+    margin: 20px 20px 0px 20px;
     box-shadow: 0px 1px 2px 0px #b8b7b7;
     background-color: transparent;
     border-radius: 20px;
@@ -155,12 +155,15 @@ a:visited {
 
 .calendar__date {
     white-space: nowrap;
-    font-size: 16px;
-    padding-left: 10px;
+    font-size: 14px;
+    padding-left: 11px;
+    align-self: center;
 }
 
 .calendar__arrows {
     display: flex;
+    margin-bottom: 12px;
+    padding-right: 3px;
 }
 
 .calendar__arrow--left,
@@ -174,7 +177,7 @@ a:visited {
 }
 
 .calendar__weekdays {
-    font-size: 12px;
+    font-size: 10px;
     margin-top: 0;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -185,13 +188,13 @@ a:visited {
 }
 
 .calendar__monthdays {
-    font-size: 12px;
+    font-size: 10px;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: auto;
     padding-left: 0;
     grid-column-gap: 0px;
-    grid-row-gap: 10px;
+    grid-row-gap: 15px;
     justify-items: center;
 }
 
@@ -297,4 +300,57 @@ a:visited {
     border: solid lightgrey;
     border-width: 0px 10px 0px 0px;
     border-image: linear-gradient(to bottom, white 48%, lightgrey, white 52%) 1;
+}
+
+.event-creation-modal {
+    border: 1px solid black;
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    background-color: white;
+    width: 540px;
+    height: 515px;
+    border-radius: 10px;
+}
+
+.event-creation-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: rgb(243, 243, 243);
+    height: 40px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.event-creation-modal__header--exit {
+    padding-right: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+.event-creation-modal__form {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    padding-left: 50px;
+}
+
+.event-creation-modal__form--titlebox {
+    outline: none;
+    border: none;
+    border-bottom: 2px solid lightgrey;
+    font-size: 24px;
+    padding-right: -50px;
+    margin-top: 40px;
+}
+
+.event-creation-modal__form--titlebox:focus {
+    border-color: #1A73E9;
+    transition: 0.4s;
+}
+
+.event-creation-modal__form--datetime {
+    margin-top: 40px;
 }

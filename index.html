@@ -40,7 +40,6 @@
             <button class="button--create">Create Event</button>
             <section class="calendar">
                 <header class="calendar__header">
-                    <h3 class="calendar__date">July 2021</h3>
                     <nav class="calendar__navigation">
                         <ul class="calendar__arrows">
                             <li class="calendar__arrow--left">
@@ -53,46 +52,10 @@
                     </nav>
                 </header>
                 <ul class="calendar__weekdays">
-                    <li>M</li>
-                    <li>T</li>
-                    <li>W</li>
-                    <li>T</li>
-                    <li>F</li>
-                    <li>S</li>
-                    <li>S</li>
+                    <!-- sidebar__minicalendar script -->
                 </ul>
                 <ul class="calendar__monthdays">
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li>5</li>
-                    <li>6</li>
-                    <li>7</li>
-                    <li>8</li>
-                    <li>9</li>
-                    <li>10</li>
-                    <li>11</li>
-                    <li>12</li>
-                    <li>13</li>
-                    <li>14</li>
-                    <li>15</li>
-                    <li>16</li>
-                    <li>17</li>
-                    <li>18</li>
-                    <li>19</li>
-                    <li>20</li>
-                    <li>21</li>
-                    <li>22</li>
-                    <li>23</li>
-                    <li>24</li>
-                    <li>25</li>
-                    <li>26</li>
-                    <li>27</li>
-                    <li>28</li>
-                    <li>29</li>
-                    <li>30</li>
-                    <li>31</li>
+                    <!-- sidebar__minicalendar script -->
                 </ul>
             </section>
         </aside>
@@ -100,10 +63,10 @@
             <header class="grid__header">
                 <h3 class="sidebar__gmt">GMT+03</h3>
                 <ul class="grid__header__weekdays">
-                    <!-- GRID WEEK VIEW FUNCTION -->
+                    <!-- header__weekview script -->
                 </ul>
                 <ul class="grid__header__monthdays">
-                    <!-- GRID WEEK VIEW FUNCTION -->
+                    <!-- header__weekview script -->
                 </ul>
             </header>
             <div class="grid__events">
@@ -307,7 +270,29 @@
             </div>
         </section>
     </main>
-    <script src="script.js"></script>
+    <div class="event-creation-modal">
+        <header class="event-creation-modal__header">
+            <a href="#"><img class="event-creation-modal__header--exit" src="./images/exit.png"></a>
+        </header>
+        <form class="event-creation-modal__form">
+
+            <input class="event-creation-modal__form--titlebox" type="text" placeholder="Add title">
+
+            <section class="event-creation-modal__form--datetime">
+                <input type="datetime-local" name="meeting-time" value="2018-06-12T19:30" min="2018-06-07T00:00" max="2018-06-14T00:00">
+                <input type="datetime-local" name="meeting-time" value="2018-06-12T19:30" min="2018-06-07T00:00" max="2018-06-14T00:00">
+            </section>
+            <section class="event-creation-modal__form--description">
+                <textarea rows="4" cols="50" placeholder="Description"></textarea>
+            </section>
+        </form>
+        <footer class="event-creation-modal__footer">
+            <button>Delete</button>
+            <button>Save</button>
+        </footer>
+    </div>
+    <script src="header__weekview.js"></script>
+    <script src="sidebar__minicalendar.js"></script>
 </body>
 
 </html>
