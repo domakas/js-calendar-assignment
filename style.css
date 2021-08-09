@@ -131,9 +131,8 @@ a:visited {
     border-radius: 20px;
     border: 1px solid #dcdcdc;
     padding: 12px 24px;
-    text-decoration: none;
-    cursor: pointer;
     font: inherit;
+    cursor: pointer;
 }
 
 .main li {
@@ -303,15 +302,14 @@ a:visited {
 }
 
 .event-creation-modal {
-    border: 1px solid black;
-    margin: 50px;
-    display: flex;
-    flex-direction: column;
+    display: none;
     position: absolute;
+    flex-direction: column;
     background-color: white;
     width: 540px;
     height: 515px;
     border-radius: 10px;
+    box-shadow: 5px 5px 30px -2px rgba(0, 0, 0, 0.6);
 }
 
 .event-creation-modal__header {
@@ -334,7 +332,7 @@ a:visited {
     display: flex;
     flex-direction: column;
     align-self: center;
-    padding-left: 50px;
+    padding-left: 40px;
 }
 
 .event-creation-modal__form--titlebox {
@@ -342,7 +340,6 @@ a:visited {
     border: none;
     border-bottom: 2px solid lightgrey;
     font-size: 24px;
-    padding-right: -50px;
     margin-top: 40px;
 }
 
@@ -352,5 +349,42 @@ a:visited {
 }
 
 .event-creation-modal__form--datetime {
+    display: flex;
     margin-top: 40px;
+    flex-direction: column;
+}
+
+.event-creation-modal__form--datetime label {
+    margin-top: 10px;
+}
+
+input[type="datetime-local"],
+textarea::placeholder {
+    font-family: ProductSans, sans-serif;
+}
+
+.event-creation-modal__form--description {
+    margin-top: 40px;
+}
+
+.event-creation-modal__form--description textarea {
+    font-family: ProductSans, sans-serif;
+    resize: none;
+}
+
+.event-creation-modal__footer {
+    margin-top: 60px;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 10px;
+    margin-bottom: 5px;
+}
+
+.event-creation-modal__footer button {
+    background-color: #1A73E9;
+    border-radius: 6px;
+    border: 1px solid #337fed;
+    padding: 10px 24px;
+    color: white;
+    margin-left: 10px;
 }
