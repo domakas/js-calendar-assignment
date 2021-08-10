@@ -6,6 +6,7 @@
     let monthDays = [];
     let nextMonthDays;
 
+
     function getWeekView() {
 
         let prevMonday;
@@ -56,12 +57,12 @@
         monthDays.forEach((monthDay) => {
             const gridHeaderMonthdaysLI = document.createElement('li');
 
-
             gridHeaderMonthdaysUL.appendChild(gridHeaderMonthdaysLI);
             gridHeaderMonthdaysLI.innerHTML += monthDay;
 
             const newDate = new Date();
             const todayIs = newDate.getDate();
+
             if (todayIs === monthDay) {
                 gridHeaderMonthdaysLI.innerHTML = null;
                 const gridHeaderMonthdaysSPAN = document.createElement('span');

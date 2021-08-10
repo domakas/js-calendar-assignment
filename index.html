@@ -112,18 +112,18 @@
 
             <section class="event-creation-modal__form--datetime">
                 <label>Start time</label>
-                <input type="datetime-local">
+                <input class="datetime--start" type="datetime-local">
                 <label>End Time</label>
-                <input type="datetime-local">
+                <input class="datetime--end" type="datetime-local">
             </section>
             <section class="event-creation-modal__form--description">
                 <p>Describe event</p>
-                <textarea rows="4" cols="60" placeholder="Description"></textarea>
+                <textarea class="event-creation-modal__form--description--input" rows="4" cols="60" placeholder="Description"></textarea>
             </section>
         </form>
         <footer class="event-creation-modal__footer">
-            <button>Delete</button>
-            <button>Save</button>
+            <button class="event-creation-modal__footer--delete">Delete</button>
+            <button class="event-creation-modal__footer--save">Save</button>
         </footer>
     </div>
     <script src="header__weekview.js"></script>
