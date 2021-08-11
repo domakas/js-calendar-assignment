@@ -1,10 +1,11 @@
-let currentDate = new Date();
+let date = new Date();
 const createEventBtn = document.querySelector('.button--create');
 const eventsModalWindow = document.querySelector('.event-creation-modal');
 const eventsMainSection = document.querySelector('.events__main');
 const cellHeight = 50;
 const gridItemsArr = [];
 let selected;
+let tempGridItem;
 
 createEventBtn.addEventListener('click', () => {
     eventsModalWindow.style.display = 'flex';
@@ -16,7 +17,7 @@ makeGrid();
 
 for (let i = 0; i < gridItemsArr.length; i++) {
     gridItemsArr[i].addEventListener('click', (event) => {
-
+        setDatetime();
         if (event.clientX + 540 > window.innerWidth) {
             eventsModalWindow.style.left = `${window.innerWidth - 840}px`;
         } else { eventsModalWindow.style.left = `${event.clientX + 50}px`; };
@@ -29,6 +30,7 @@ for (let i = 0; i < gridItemsArr.length; i++) {
         }
         gridItemsArr[i].style.backgroundColor = '#1A73E9';
         gridItemsArr[i].style.borderRadius = '3px';
+        tempGridItem = gridItemsArr[i];
 
         selected = i;
         eventsModalWindow.style.display = 'flex';
@@ -50,42 +52,40 @@ function makeGrid() {
 
 const exitEventModalBtn = document.querySelector('.event-creation-modal__header--exit');
 const eventTitle = document.querySelector('.event-creation-modal__form--titlebox');
-const datetimeStart = document.querySelector('.datetime--start');
+let datetimeStart = document.querySelector('.datetime--start');
 const datetimeEnd = document.querySelector('.datetime--end');
 const eventDescription = document.querySelector('.event-creation-modal__form--description--input');
 const deleteEventBtn = document.querySelector('.event-creation-modal__footer--delete');
 const saveEventBtn = document.querySelector('.event-creation-modal__footer--save');
+let endTimeSmallerThanStart = false;
+
+
 
 exitEventModalBtn.addEventListener('click', function closeModal() {
-    eventsModalWindow.style.display = 'none';
+    eventsModalWindow.style.display = '';
+    resetEventModal();
 })
 
 saveEventBtn.addEventListener('click', () => {
+    validateDatetime();
     let storedEvent = {};
     if (eventTitle.value.length == 0) {
         eventTitle.style.border = '1px solid red';
     } else if (datetimeStart.value.length == 0) {
         datetimeStart.style.border = '1px solid red';
-    } else if (datetimeEnd.value.length == 0) {
+    } else if (datetimeEnd.value.length == 0 || endTimeSmallerThanStart === true) {
         datetimeEnd.style.border = '1px solid red';
     } else {
-        eventTitle.style.border = 'none';
-        eventTitle.style.borderBottom = '2px solid lightgrey';
-        datetimeStart.style.border = '1px solid black';
-        datetimeEnd.style.border = '1px solid black';
-        eventsModalWindow.style.display = 'none';
+
         storedEvent.title = eventTitle.value;
         storedEvent.datetimeStart = datetimeStart.value;
         storedEvent.datetimeEnd = datetimeEnd.value;
         storedEvent.description = eventDescription.value;
-        eventTitle.value = null;
-        // datetimeStart.value = currentDate.value;
-        // datetimeEnd.value = currentDate.value;
-        eventDescription.value = null;
-        //storedEvent = JSON.stringify(storedEvent);
+
+        resetEventModal();
 
         addEventToCalendar(storedEvent);
-        // update local storage
+
         updateEventsInStorage(storedEvent);
     }
 })
@@ -98,8 +98,8 @@ function addEventToCalendar(calendarEvent) {
     // set up position
 
     function setEventPosition() {
-        let dateObjStart = new Date(datetimeStart.value);
-        let dateObjEnd = new Date(datetimeEnd.value);
+        let dateObjStart = new Date(calendarEvent.datetimeStart);
+        let dateObjEnd = new Date(calendarEvent.datetimeEnd);
 
         let dayOfWeek = dateObjStart.getDay();
         dayOfWeek = (dayOfWeek === 0) ? 6 : (dayOfWeek - 1);
@@ -116,16 +116,16 @@ function addEventToCalendar(calendarEvent) {
         let positionTop = 50 * hourOfDayStart;
 
         let hourDiff = Math.abs(dateObjEnd - dateObjStart) / 36e5;
+        let minutesStartPosition = minutesOfHourStart / 60 * 50;
 
         eventElement.style.position = 'absolute';
         eventElement.style.left = `${positionLeft}%`;
-        eventElement.style.top = `${positionTop}px`;
+        eventElement.style.top = `${positionTop + minutesStartPosition}px`;
         eventElement.style.backgroundColor = '#1A73E9';
         eventElement.style.height = `${cellHeight * hourDiff}px`;
         eventElement.style.width = 'calc(100% / 7 - 10px)';
         eventElement.innerText = calendarEvent.title + "  " + `${hourOfDayStart}:${minutesOfHourStartString} - ${hourOfDayEnd}:${minutesOfHourEndString}`;
     }
-
     setEventPosition();
 
     eventsMainSection.appendChild(eventElement);
@@ -133,30 +133,42 @@ function addEventToCalendar(calendarEvent) {
 
 function updateEventsInStorage(calendarEvent) {
     const eventsListString = localStorage.getItem('eventsList');
-
     let eventsList = eventsListString ? JSON.parse(eventsListString) : [];
-
     eventsList.push(calendarEvent);
-
     localStorage.setItem('eventsList', JSON.stringify(eventsList));
+}
 
+function resetEventModal() {
+    eventTitle.style.border = '';
+    eventTitle.style.borderBottom = '';
+    datetimeStart.style.border = '';
+    datetimeEnd.style.border = '';
+    eventsModalWindow.style.display = '';
+
+    tempGridItem.style.backgroundColor = '';
+
+    eventTitle.value = null;
+    datetimeStart.value = null;
+    datetimeEnd.value = null;
+    eventDescription.value = null;
+}
+
+function validateDatetime() {
+    const datetimeStartValue = new Date(datetimeStart.value);
+    const datetimeEndValue = new Date(datetimeEnd.value);
+
+    let datetimeStartms = datetimeStartValue.getTime();
+    let datetimeEndms = datetimeEndValue.getTime();
+
+    if (datetimeStartms >= datetimeEndms) {
+        endTimeSmallerThanStart = true;
+    } else { endTimeSmallerThanStart = false; }
 }
 
 function setDatetime() {
-    let today = new Date();
-    let dd = today.getDate();
-    let mm = today.getMonth() + 1;
-    let yyyy = today.getFullYear();
-    if (dd < 10) {
-        dd = '0' + dd;
-    }
-    if (mm < 10) {
-        mm = '0' + mm;
-    }
-
-    today = yyyy + '-' + mm + '-' + dd;
-    datetimeStart.setAttribute("min", today);
-    let datetimeMinimum = datetimeStart.getAttribute("min");
-    console.log(datetimeMinimum);
-    datetimeEnd.setAttribute("min", datetimeMinimum);
+    date.setHours(date.getHours() + 3);
+    const currentDate = date.toISOString();
+    const currentDateSliced = currentDate.slice(0, -8);
+    datetimeStart.value = currentDateSliced;
+    datetimeEnd.value = datetimeStart.value;
 }
