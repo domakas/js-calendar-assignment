@@ -8,6 +8,9 @@ let selected;
 let tempGridItem;
 
 createEventBtn.addEventListener('click', () => {
+
+    resetEventModal();
+    setDatetimeNow();
     eventsModalWindow.style.display = 'flex';
     eventsModalWindow.style.top = '130px';
     eventsModalWindow.style.left = '150px';
@@ -17,7 +20,6 @@ makeGrid();
 
 for (let i = 0; i < gridItemsArr.length; i++) {
     gridItemsArr[i].addEventListener('click', (event) => {
-        setDatetime();
         if (event.clientX + 540 > window.innerWidth) {
             eventsModalWindow.style.left = `${window.innerWidth - 840}px`;
         } else { eventsModalWindow.style.left = `${event.clientX + 50}px`; };
@@ -144,9 +146,9 @@ function resetEventModal() {
     datetimeStart.style.border = '';
     datetimeEnd.style.border = '';
     eventsModalWindow.style.display = '';
-
-    tempGridItem.style.backgroundColor = '';
-
+    if (tempGridItem) {
+        tempGridItem.style.backgroundColor = '';
+    }
     eventTitle.value = null;
     datetimeStart.value = null;
     datetimeEnd.value = null;
@@ -165,10 +167,26 @@ function validateDatetime() {
     } else { endTimeSmallerThanStart = false; }
 }
 
-function setDatetime() {
-    date.setHours(date.getHours() + 3);
-    const currentDate = date.toISOString();
+function setDatetimeNow() {
+    let tempDate = new Date();
+    tempDate.setHours(date.getHours() + 3);
+    const currentDate = tempDate.toISOString();
     const currentDateSliced = currentDate.slice(0, -8);
     datetimeStart.value = currentDateSliced;
     datetimeEnd.value = datetimeStart.value;
+}
+
+function setSelectedDatetime(event) {
+    let tempDateTwo = new Date();
+    let selectedHour = event.target.offsetTop / cellHeight;
+    let selectedDayIndex = Math.round(event.target.offsetLeft / event.target.offsetWidth);
+    let selectedDayInWeek = new Date(fullDate.setDate(fullDate.getDate() - (fullDate.getDay() + selectedDayIndex + 6) % 7));
+
+    tempDateTwo.setHours(selectedHour);
+    tempDateTwo.setDate(selectedDayInWeek);
+    const currentSelectedDate = tempDateTwo.toISOString();
+    const currentSelectedDateSliced = currentSelectedDate.slice(0, -8);
+    datetimeStart.value = currentSelectedDateSliced;
+    datetimeEnd.value = datetimeStart.value;
+    //LEFT OFF HERE   CHECK THIS CODE
 }
