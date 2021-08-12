@@ -1,6 +1,7 @@
 let date = new Date();
 const createEventBtn = document.querySelector('.button--create');
-const eventsModalWindow = document.querySelector('.event-creation-modal');
+const eventCreationModal = document.querySelector('.event-creation-modal');
+const eventModalInfo = document.querySelector('.event-modal-info');
 const eventsMainSection = document.querySelector('.events__main');
 const cellHeight = 50;
 const gridItemsArr = [];
@@ -11,22 +12,18 @@ createEventBtn.addEventListener('click', () => {
 
     resetEventModal();
     setDatetimeNow();
-    eventsModalWindow.style.display = 'flex';
-    eventsModalWindow.style.top = '130px';
-    eventsModalWindow.style.left = '150px';
+    eventCreationModal.style.display = 'flex';
+    eventCreationModal.style.top = '130px';
+    eventCreationModal.style.left = '150px';
 })
 
 makeGrid();
 
 for (let i = 0; i < gridItemsArr.length; i++) {
     gridItemsArr[i].addEventListener('click', (event) => {
-        if (event.clientX + 540 > window.innerWidth) {
-            eventsModalWindow.style.left = `${window.innerWidth - 840}px`;
-        } else { eventsModalWindow.style.left = `${event.clientX + 50}px`; };
-        if (event.clientY + 515 > window.innerHeight) {
-            eventsModalWindow.style.top = `${window.innerHeight - 715}px`;
-        } else { eventsModalWindow.style.top = `${event.clientY}px`; };
-
+        eventModalInfo.style.display = '';
+        setSelectedDatetime(event);
+        setModalPosition(event, eventCreationModal);
         if (selected !== undefined) {
             gridItemsArr[selected].style.backgroundColor = '#FFFFFF';
         }
@@ -35,10 +32,32 @@ for (let i = 0; i < gridItemsArr.length; i++) {
         tempGridItem = gridItemsArr[i];
 
         selected = i;
-        eventsModalWindow.style.display = 'flex';
+        eventCreationModal.style.display = 'flex';
     });
 }
 
+eventsMainSection.addEventListener('click', (event) => {
+    let eventElementClass = event.target.classList.contains("event__element");
+    if (eventElementClass) {
+        resetEventModal();
+
+        const eventModalInfoTitle = document.querySelector('.event-modal-info__title');
+        const eventModalInfoDatetime = document.querySelector('.event-modal-info__datetime');
+        const eventModalInfoDescription = document.querySelector('.event-modal-info__description');
+
+        setModalPosition(event, eventModalInfo);
+
+        let eventElementId = event.target.getAttribute('data-index');
+        let eventInfoString = localStorage.getItem('eventsList');
+        let eventInfo = JSON.parse(eventInfoString);
+
+        eventModalInfo.style.display = 'flex';
+        eventModalInfoTitle.innerHTML = eventInfo[eventElementId].title;
+        eventModalInfoDatetime.innerHTML = eventInfo[eventElementId].datetimeStart + " - " + eventInfo[eventElementId].datetimeEnd;
+        eventModalInfoDescription.innerHTML = eventInfo[eventElementId].description;
+
+    } else { return false };
+})
 
 function makeGrid() {
     for (let i = 0; i < 168; i++) {
@@ -47,12 +66,22 @@ function makeGrid() {
         eventsMainSection.appendChild(eventsGridItemLI);
         gridItemsArr.push(eventsGridItemLI);
     };
+    displayEventsFromStorage();
 }
 
+function setModalPosition(event, element) {
+    if (event.clientX + element.offsetWidth > window.innerWidth) {
+        element.style.left = `${window.innerWidth - (element.offsetWidth + 300)}px`;
+    } else { element.style.left = `${event.clientX + 50}px`; };
+    if (event.clientY + element.offsetHeight > window.innerHeight) {
+        element.style.top = `${window.innerHeight - element.offsetHeight + 215}px`;
+    } else { element.style.top = `${event.clientY}px`; };
+}
 
 //EVENTS MODAL
 
 const exitEventModalBtn = document.querySelector('.event-creation-modal__header--exit');
+const exitEventModalInfoBtn = document.querySelector('.event-modal-info__header--exit');
 const eventTitle = document.querySelector('.event-creation-modal__form--titlebox');
 let datetimeStart = document.querySelector('.datetime--start');
 const datetimeEnd = document.querySelector('.datetime--end');
@@ -62,11 +91,9 @@ const saveEventBtn = document.querySelector('.event-creation-modal__footer--save
 let endTimeSmallerThanStart = false;
 
 
+exitEventModalInfoBtn.addEventListener('click', resetEventModal);
+exitEventModalBtn.addEventListener('click', resetEventModal);
 
-exitEventModalBtn.addEventListener('click', function closeModal() {
-    eventsModalWindow.style.display = '';
-    resetEventModal();
-})
 
 saveEventBtn.addEventListener('click', () => {
     validateDatetime();
@@ -93,11 +120,12 @@ saveEventBtn.addEventListener('click', () => {
 })
 
 
-function addEventToCalendar(calendarEvent) {
+function addEventToCalendar(calendarEvent, index) {
     const eventElement = document.createElement('li');
     eventElement.classList.add('event__element');
 
-    // set up position
+    eventElement.setAttribute('data-index', index);
+
 
     function setEventPosition() {
         let dateObjStart = new Date(calendarEvent.datetimeStart);
@@ -140,12 +168,19 @@ function updateEventsInStorage(calendarEvent) {
     localStorage.setItem('eventsList', JSON.stringify(eventsList));
 }
 
+function displayEventsFromStorage() {
+    const eventsInStorageString = localStorage.getItem('eventsList');
+    let eventsInStorage = eventsInStorageString ? JSON.parse(eventsInStorageString) : updateEventsInStorage(calendarEvent);
+    eventsInStorage.forEach((calendarEvent, index) => addEventToCalendar(calendarEvent, index));
+}
+
 function resetEventModal() {
     eventTitle.style.border = '';
     eventTitle.style.borderBottom = '';
     datetimeStart.style.border = '';
     datetimeEnd.style.border = '';
-    eventsModalWindow.style.display = '';
+    eventModalInfo.style.display = '';
+    eventCreationModal.style.display = '';
     if (tempGridItem) {
         tempGridItem.style.backgroundColor = '';
     }
@@ -180,13 +215,14 @@ function setSelectedDatetime(event) {
     let tempDateTwo = new Date();
     let selectedHour = event.target.offsetTop / cellHeight;
     let selectedDayIndex = Math.round(event.target.offsetLeft / event.target.offsetWidth);
-    let selectedDayInWeek = new Date(fullDate.setDate(fullDate.getDate() - (fullDate.getDay() + selectedDayIndex + 6) % 7));
+    let selectedDateInWeek = new Date(tempDateTwo.setDate((tempDateTwo.getDate() - (tempDateTwo.getDay() + 6) % 7) + selectedDayIndex));
+    let selectedDayInWeek = selectedDateInWeek.getDate();
 
-    tempDateTwo.setHours(selectedHour);
+    tempDateTwo.setHours(selectedHour + 3);
     tempDateTwo.setDate(selectedDayInWeek);
+
     const currentSelectedDate = tempDateTwo.toISOString();
     const currentSelectedDateSliced = currentSelectedDate.slice(0, -8);
     datetimeStart.value = currentSelectedDateSliced;
     datetimeEnd.value = datetimeStart.value;
-    //LEFT OFF HERE   CHECK THIS CODE
 }
