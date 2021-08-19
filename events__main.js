@@ -17,6 +17,7 @@ createEventBtn.addEventListener('click', () => {
     eventCreationModal.style.left = '150px';
 })
 
+
 makeGrid();
 
 for (let i = 0; i < gridItemsArr.length; i++) {
@@ -26,6 +27,7 @@ for (let i = 0; i < gridItemsArr.length; i++) {
         setModalPosition(event, eventCreationModal);
         if (selected !== undefined) {
             gridItemsArr[selected].style.backgroundColor = '#FFFFFF';
+            gridItemsArr[selected].style.borderRadius = '';
         }
         gridItemsArr[i].style.backgroundColor = '#1A73E9';
         gridItemsArr[i].style.borderRadius = '3px';
@@ -36,8 +38,16 @@ for (let i = 0; i < gridItemsArr.length; i++) {
     });
 }
 
-eventsMainSection.addEventListener('click', (event) => {
-    let eventElementClass = event.target.classList.contains("event__element");
+let deleteEventBtnCallback;
+
+
+eventsMainSection.addEventListener('click', test);
+
+
+function test(event) {
+
+    let selectedEventTarget = event.target;
+    let eventElementClass = selectedEventTarget.classList.contains("event__element");
     if (eventElementClass) {
         resetEventModal();
 
@@ -47,17 +57,41 @@ eventsMainSection.addEventListener('click', (event) => {
 
         setModalPosition(event, eventModalInfo);
 
-        let eventElementId = event.target.getAttribute('data-index');
+        let eventElementDataId = selectedEventTarget.getAttribute('data-id');
+
         let eventInfoString = localStorage.getItem('eventsList');
         let eventInfo = JSON.parse(eventInfoString);
+        let eventElementId = eventInfo[eventElementDataId].id;
+
 
         eventModalInfo.style.display = 'flex';
-        eventModalInfoTitle.innerHTML = eventInfo[eventElementId].title;
-        eventModalInfoDatetime.innerHTML = eventInfo[eventElementId].datetimeStart + " - " + eventInfo[eventElementId].datetimeEnd;
-        eventModalInfoDescription.innerHTML = eventInfo[eventElementId].description;
+        eventModalInfoTitle.innerHTML = eventInfo[eventElementDataId].title;
 
+        let startTime = eventInfo[eventElementDataId].datetimeStart;
+        let endTime = eventInfo[eventElementDataId].datetimeEnd;
+
+        eventModalInfoDatetime.innerHTML = startTime.replace('T', ' ') + " - " + endTime.replace('T', ' ');
+        eventModalInfoDescription.innerHTML = eventInfo[eventElementDataId].description;
+
+        deleteEventBtnCallback = () => {
+            eventInfo.splice(eventElementDataId, 1);
+            selectedEventTarget.remove();
+
+            for (let i = 0; i < eventInfo.length; i++) {
+                eventInfo[i].id = i;
+            };
+
+            let currentEventsDOM = document.querySelectorAll('.event__element');
+            for (let i = 0; i < currentEventsDOM.length; i++) {
+                currentEventsDOM[i].setAttribute('data-id', i);
+            };
+
+            localStorage.setItem('eventsList', JSON.stringify(eventInfo));
+            eventModalInfo.style.display = '';
+        }
+        deleteEventBtn.addEventListener('click', deleteEventBtnCallback);
     } else { return false };
-})
+}
 
 function makeGrid() {
     for (let i = 0; i < 168; i++) {
@@ -66,7 +100,9 @@ function makeGrid() {
         eventsMainSection.appendChild(eventsGridItemLI);
         gridItemsArr.push(eventsGridItemLI);
     };
-    displayEventsFromStorage();
+    if (localStorage.getItem('eventsList')) {
+        displayEventsFromStorage();
+    };
 }
 
 function setModalPosition(event, element) {
@@ -106,25 +142,32 @@ saveEventBtn.addEventListener('click', () => {
         datetimeEnd.style.border = '1px solid red';
     } else {
 
+
+        let addedEventsString = localStorage.getItem('eventsList');
+        let addedEvents = addedEventsString ? JSON.parse(addedEventsString) : [];
+
         storedEvent.title = eventTitle.value;
         storedEvent.datetimeStart = datetimeStart.value;
         storedEvent.datetimeEnd = datetimeEnd.value;
         storedEvent.description = eventDescription.value;
+        storedEvent.id = 0;
+        storedEvent.id = addedEvents.length;
 
         resetEventModal();
 
-        addEventToCalendar(storedEvent);
+        addEventToCalendar(storedEvent, addedEvents.length);
 
         updateEventsInStorage(storedEvent);
-    }
-})
 
+    };
+})
 
 function addEventToCalendar(calendarEvent, index) {
     const eventElement = document.createElement('li');
     eventElement.classList.add('event__element');
 
-    eventElement.setAttribute('data-index', index);
+
+    eventElement.setAttribute('data-id', index);
 
 
     function setEventPosition() {
@@ -152,9 +195,19 @@ function addEventToCalendar(calendarEvent, index) {
         eventElement.style.left = `${positionLeft}%`;
         eventElement.style.top = `${positionTop + minutesStartPosition}px`;
         eventElement.style.backgroundColor = '#1A73E9';
-        eventElement.style.height = `${cellHeight * hourDiff}px`;
+
+        let elementHeight = cellHeight * hourDiff;
+        let plusDays = 0;
+        let plusDaysString = '';
+        if (elementHeight > 1200) {
+            plusDays = Math.floor(elementHeight / 1200);
+            plusDaysString = `+ ${plusDays} day`;
+            elementHeight = 1200;
+        }
+
+        eventElement.style.height = `${elementHeight}px`;
         eventElement.style.width = 'calc(100% / 7 - 10px)';
-        eventElement.innerText = calendarEvent.title + "  " + `${hourOfDayStart}:${minutesOfHourStartString} - ${hourOfDayEnd}:${minutesOfHourEndString}`;
+        eventElement.innerText = calendarEvent.title + "    " + `${hourOfDayStart}:${minutesOfHourStartString} - ${hourOfDayEnd}:${minutesOfHourEndString}` + "    " + `${plusDaysString}`;
     }
     setEventPosition();
 
@@ -171,7 +224,7 @@ function updateEventsInStorage(calendarEvent) {
 function displayEventsFromStorage() {
     const eventsInStorageString = localStorage.getItem('eventsList');
     let eventsInStorage = eventsInStorageString ? JSON.parse(eventsInStorageString) : updateEventsInStorage(calendarEvent);
-    eventsInStorage.forEach((calendarEvent, index) => addEventToCalendar(calendarEvent, index));
+    eventsInStorage.forEach((calendarEvent, index) => addEventToCalendar(calendarEvent, index, calendarEvent.id));
 }
 
 function resetEventModal() {
@@ -188,6 +241,7 @@ function resetEventModal() {
     datetimeStart.value = null;
     datetimeEnd.value = null;
     eventDescription.value = null;
+    deleteEventBtn.removeEventListener('click', deleteEventBtnCallback);
 }
 
 function validateDatetime() {
@@ -212,17 +266,27 @@ function setDatetimeNow() {
 }
 
 function setSelectedDatetime(event) {
+    let tempDateOne = new Date();
     let tempDateTwo = new Date();
     let selectedHour = event.target.offsetTop / cellHeight;
     let selectedDayIndex = Math.round(event.target.offsetLeft / event.target.offsetWidth);
-    let selectedDateInWeek = new Date(tempDateTwo.setDate((tempDateTwo.getDate() - (tempDateTwo.getDay() + 6) % 7) + selectedDayIndex));
+    let selectedDateInWeek = new Date(tempDateOne.setDate((tempDateOne.getDate() - (tempDateOne.getDay() + 6) % 7) + selectedDayIndex));
     let selectedDayInWeek = selectedDateInWeek.getDate();
 
-    tempDateTwo.setHours(selectedHour + 3);
+    tempDateOne.setHours(selectedHour + 3);
+    tempDateOne.setMinutes(0);
+    tempDateOne.setDate(selectedDayInWeek);
+
+    tempDateTwo.setHours(selectedHour + 4);
+    tempDateTwo.setMinutes(0);
     tempDateTwo.setDate(selectedDayInWeek);
 
-    const currentSelectedDate = tempDateTwo.toISOString();
-    const currentSelectedDateSliced = currentSelectedDate.slice(0, -8);
-    datetimeStart.value = currentSelectedDateSliced;
-    datetimeEnd.value = datetimeStart.value;
+
+    const currentSelectedDateStart = tempDateOne.toISOString();
+    const currentSelectedDateSlicedStart = currentSelectedDateStart.slice(0, -8);
+    datetimeStart.value = currentSelectedDateSlicedStart;
+
+    const currentSelectedDateEnd = tempDateTwo.toISOString();
+    const currentSelectedDateSlicedEnd = currentSelectedDateEnd.slice(0, -8);
+    datetimeEnd.value = currentSelectedDateSlicedEnd;
 }

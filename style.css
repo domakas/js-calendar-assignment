@@ -73,12 +73,12 @@ a:visited {
     cursor: pointer;
 }
 
-.navigation__item--center--arrow--left,
-.navigation__item--center--arrow--right {
+.navigation__item--arrow--left,
+.navigation__item--arrow--right {
     margin-right: 10px;
 }
 
-.navigation__item--center--arrow--left:hover,
+.navigation__item--arrow--left:hover,
 .navigation__item--arrow--right:hover {
     border-radius: 50%;
     background-color: rgb(241, 241, 241);

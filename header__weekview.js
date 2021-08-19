@@ -87,6 +87,9 @@
         })
     }
 
+    const headerNavArrowLeft = document.querySelector('.navigation__item--arrow--left');
+    const headerNavArrowRight = document.querySelector('.navigation__item--arrow--right');
+
     getWeekView();
     appendDaysToList();
 })();
