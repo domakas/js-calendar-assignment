@@ -41,10 +41,10 @@ for (let i = 0; i < gridItemsArr.length; i++) {
 let deleteEventBtnCallback;
 
 
-eventsMainSection.addEventListener('click', test);
+eventsMainSection.addEventListener('click', openEventModal);
 
 
-function test(event) {
+function openEventModal(event) {
 
     let selectedEventTarget = event.target;
     let eventElementClass = selectedEventTarget.classList.contains("event__element");
@@ -61,7 +61,7 @@ function test(event) {
 
         let eventInfoString = localStorage.getItem('eventsList');
         let eventInfo = JSON.parse(eventInfoString);
-        let eventElementId = eventInfo[eventElementDataId].id;
+        // let eventElementId = eventInfo[eventElementDataId].id;
 
 
         eventModalInfo.style.display = 'flex';
@@ -211,7 +211,9 @@ function addEventToCalendar(calendarEvent, index) {
     }
     setEventPosition();
 
-    eventsMainSection.appendChild(eventElement);
+    if (isEventInCurrentWeek(calendarEvent)) {
+        eventsMainSection.appendChild(eventElement);
+    };
 }
 
 function updateEventsInStorage(calendarEvent) {
@@ -289,4 +291,32 @@ function setSelectedDatetime(event) {
     const currentSelectedDateEnd = tempDateTwo.toISOString();
     const currentSelectedDateSlicedEnd = currentSelectedDateEnd.slice(0, -8);
     datetimeEnd.value = currentSelectedDateSlicedEnd;
+}
+
+function isEventInCurrentWeek(calendarEvent) {
+    let currentDate = new Date();
+    let currentWeekFirstDay;
+    if (currentDate.getDay() === 0) {
+        currentWeekFirstDay = currentDate.getDate() - 6;
+    } else { currentWeekFirstDay = currentDate.getDate() - currentDate.getDay() + 1; };
+
+    let firstDayDate = new Date(currentDate.setDate(currentWeekFirstDay));
+    let lastDayDate = new Date(currentDate.setDate(currentDate.getDate() + 6));
+
+    firstDayDate = new Date(currentDate.setDate(currentWeekFirstDay)).toISOString();
+    lastDayDate = new Date(currentDate.setDate(currentDate.getDate() + 6)).toISOString();
+
+
+
+
+    String.prototype.replaceAt = function(index, replacement) {
+        return (this.substr(0, index) + replacement + this.substr(index + replacement.length)).slice(0, -8);
+    };
+
+    let firstDayDateEdited = firstDayDate.replaceAt(11, "00:00");
+    let lastDayDateEdited = lastDayDate.replaceAt(11, "23:59");
+
+    if (calendarEvent.datetimeStart > firstDayDateEdited && calendarEvent.datetimeEnd < lastDayDateEdited) {
+        return true;
+    } else return false;
 }

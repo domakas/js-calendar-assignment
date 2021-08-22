@@ -212,15 +212,18 @@ a:visited {
 .grid__header__weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    color: grey;
     justify-items: center;
-    font-size: 12px;
     margin-bottom: 0;
     padding-left: 50px;
     padding-right: 14px;
 }
 
-.grid__header__monthdays li {
+.grid__header__weekdays__li {
+    color: grey;
+    font-size: 12px;
+}
+
+.grid__header__monthdays__li {
     width: 100%;
     text-align: center;
     border-width: 0px 1px 1px 1px;
@@ -268,7 +271,7 @@ a:visited {
 .sidebar__gmt {
     position: absolute;
     width: 55px;
-    top: 118px;
+    top: 122px;
     left: 240px;
     font-size: 12px;
     color: grey;
