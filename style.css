@@ -233,6 +233,13 @@ a:visited {
     padding: 10px 0px 10px 0px;
 }
 
+.grid__header__monthdays__li--span {
+    background-color: #1A73E9;
+    border-radius: 50%;
+    color: white;
+    padding: 5px 15px 5px 15px;
+}
+
 .grid__header__monthdays {
     display: grid;
     justify-items: center;

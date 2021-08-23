@@ -8,8 +8,20 @@ const gridItemsArr = [];
 let selected;
 let tempGridItem;
 
-createEventBtn.addEventListener('click', () => {
+String.prototype.replaceAt = function(index, replacement) {
+    return (this.substr(0, index) + replacement + this.substr(index + replacement.length)).slice(0, -8);
+};
 
+const navArrowRight = document.querySelector('.navigation__item--arrow--right');
+navArrowRight.addEventListener('click', () => {
+    displayEventsFromStorage();
+});
+const navArrowLeft = document.querySelector('.navigation__item--arrow--left');
+navArrowLeft.addEventListener('click', () => {
+    displayEventsFromStorage();
+});
+
+createEventBtn.addEventListener('click', () => {
     resetEventModal();
     setDatetimeNow();
     eventCreationModal.style.display = 'flex';
@@ -30,7 +42,6 @@ for (let i = 0; i < gridItemsArr.length; i++) {
             gridItemsArr[selected].style.borderRadius = '';
         }
         gridItemsArr[i].style.backgroundColor = '#1A73E9';
-        gridItemsArr[i].style.borderRadius = '3px';
         tempGridItem = gridItemsArr[i];
 
         selected = i;
@@ -83,7 +94,7 @@ function openEventModal(event) {
 
             let currentEventsDOM = document.querySelectorAll('.event__element');
             for (let i = 0; i < currentEventsDOM.length; i++) {
-                currentEventsDOM[i].setAttribute('data-id', i);
+                currentEventsDOM[i].setAttribute('data-id', i); //kad sutaptu su storage elementu id
             };
 
             localStorage.setItem('eventsList', JSON.stringify(eventInfo));
@@ -150,7 +161,6 @@ saveEventBtn.addEventListener('click', () => {
         storedEvent.datetimeStart = datetimeStart.value;
         storedEvent.datetimeEnd = datetimeEnd.value;
         storedEvent.description = eventDescription.value;
-        storedEvent.id = 0;
         storedEvent.id = addedEvents.length;
 
         resetEventModal();
@@ -213,7 +223,14 @@ function addEventToCalendar(calendarEvent, index) {
 
     if (isEventInCurrentWeek(calendarEvent)) {
         eventsMainSection.appendChild(eventElement);
+    } else {
+        let element = document.querySelector("[data-id=" + `"${eventElement.getAttribute('data-id')}"` + "]");
+        //let element = document.querySelector("[data-id=" + `"${calendarEvent.id}"` + "]");
+        if (element != null) {
+            element.remove();
+        };
     };
+
 }
 
 function updateEventsInStorage(calendarEvent) {
@@ -294,29 +311,19 @@ function setSelectedDatetime(event) {
 }
 
 function isEventInCurrentWeek(calendarEvent) {
-    let currentDate = new Date();
+    let currentDate = new Date(dateNow);
     let currentWeekFirstDay;
     if (currentDate.getDay() === 0) {
         currentWeekFirstDay = currentDate.getDate() - 6;
     } else { currentWeekFirstDay = currentDate.getDate() - currentDate.getDay() + 1; };
 
-    let firstDayDate = new Date(currentDate.setDate(currentWeekFirstDay));
-    let lastDayDate = new Date(currentDate.setDate(currentDate.getDate() + 6));
-
-    firstDayDate = new Date(currentDate.setDate(currentWeekFirstDay)).toISOString();
-    lastDayDate = new Date(currentDate.setDate(currentDate.getDate() + 6)).toISOString();
-
-
-
-
-    String.prototype.replaceAt = function(index, replacement) {
-        return (this.substr(0, index) + replacement + this.substr(index + replacement.length)).slice(0, -8);
-    };
+    let firstDayDate = new Date(currentDate.setDate(currentWeekFirstDay)).toISOString();
+    let lastDayDate = new Date(currentDate.setDate(currentDate.getDate() + 6)).toISOString();
 
     let firstDayDateEdited = firstDayDate.replaceAt(11, "00:00");
-    let lastDayDateEdited = lastDayDate.replaceAt(11, "23:59");
+    let lastDayDateEdited = lastDayDate.replaceAt(11, "00:00");
 
-    if (calendarEvent.datetimeStart > firstDayDateEdited && calendarEvent.datetimeEnd < lastDayDateEdited) {
+    if (calendarEvent.datetimeStart >= firstDayDateEdited && calendarEvent.datetimeEnd <= lastDayDateEdited) {
         return true;
     } else return false;
 }

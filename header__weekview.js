@@ -19,7 +19,7 @@
     function appendDaysToList() {
         let monthDayIndex = 0;
         const gridHeaderMonthdaysUL = document.querySelector('.grid__header__monthdays');
-        const gridHeaderWeekdaysUL = document.querySelector('.grid__header__weekdays');
+        const gridHeaderWeekdaysUL = document.querySelector('.grid__header__weekdays'); //
         monthDays.forEach((monthDay) => {
             let gridHeaderMonthdaysLI = document.createElement('li');
             gridHeaderMonthdaysLI.classList.add('grid__header__monthdays__li');
@@ -32,13 +32,11 @@
             if (todayIs === monthDay) {
                 gridHeaderMonthdaysLI.innerHTML = null;
                 const gridHeaderMonthdaysSPAN = document.createElement('span');
+                gridHeaderMonthdaysSPAN.classList.add('grid__header__monthdays__li--span');
                 gridHeaderMonthdaysLI.appendChild(gridHeaderMonthdaysSPAN);
                 gridHeaderMonthdaysSPAN.innerHTML += monthDay;
 
-                gridHeaderMonthdaysSPAN.style.backgroundColor = '#1A73E9'
-                gridHeaderMonthdaysSPAN.style.borderRadius = '50%'
-                gridHeaderMonthdaysSPAN.style.color = 'white';
-                gridHeaderMonthdaysSPAN.style.padding = '5px 15px 5px 15px';
+
                 monthDayIndex = monthDays.indexOf(monthDay);
             }
         });
