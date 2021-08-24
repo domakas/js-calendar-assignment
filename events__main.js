@@ -8,11 +8,11 @@ const gridItemsArr = [];
 let selected;
 let tempGridItem;
 
-String.prototype.replaceAt = function(index, replacement) {
+String.prototype.replaceAt = function(index, replacement) { //
     return (this.substr(0, index) + replacement + this.substr(index + replacement.length)).slice(0, -8);
 };
 
-const navArrowRight = document.querySelector('.navigation__item--arrow--right');
+const navArrowRight = document.querySelector('.navigation__item--arrow--right'); //publisher subscriber design pattern
 navArrowRight.addEventListener('click', () => {
     displayEventsFromStorage();
 });
@@ -27,7 +27,7 @@ createEventBtn.addEventListener('click', () => {
     eventCreationModal.style.display = 'flex';
     eventCreationModal.style.top = '130px';
     eventCreationModal.style.left = '150px';
-})
+});
 
 
 makeGrid();
@@ -70,35 +70,27 @@ function openEventModal(event) {
 
         let eventElementDataId = selectedEventTarget.getAttribute('data-id');
 
+
         let eventInfoString = localStorage.getItem('eventsList');
         let eventInfo = JSON.parse(eventInfoString);
-        // let eventElementId = eventInfo[eventElementDataId].id;
-
+        let eventById = eventInfo.find(event => event.id === +eventElementDataId);
 
         eventModalInfo.style.display = 'flex';
-        eventModalInfoTitle.innerHTML = eventInfo[eventElementDataId].title;
+        eventModalInfoTitle.innerHTML = eventById.title;
 
-        let startTime = eventInfo[eventElementDataId].datetimeStart;
-        let endTime = eventInfo[eventElementDataId].datetimeEnd;
+        let startTime = eventById.datetimeStart;
+        let endTime = eventById.datetimeEnd;
 
         eventModalInfoDatetime.innerHTML = startTime.replace('T', ' ') + " - " + endTime.replace('T', ' ');
-        eventModalInfoDescription.innerHTML = eventInfo[eventElementDataId].description;
+        eventModalInfoDescription.innerHTML = eventById.description;
 
         deleteEventBtnCallback = () => {
-            eventInfo.splice(eventElementDataId, 1);
+            eventInfo.splice(eventInfo.indexOf(eventById), 1);
             selectedEventTarget.remove();
-
-            for (let i = 0; i < eventInfo.length; i++) {
-                eventInfo[i].id = i;
-            };
-
-            let currentEventsDOM = document.querySelectorAll('.event__element');
-            for (let i = 0; i < currentEventsDOM.length; i++) {
-                currentEventsDOM[i].setAttribute('data-id', i); //kad sutaptu su storage elementu id
-            };
 
             localStorage.setItem('eventsList', JSON.stringify(eventInfo));
             eventModalInfo.style.display = '';
+
         }
         deleteEventBtn.addEventListener('click', deleteEventBtnCallback);
     } else { return false };
@@ -161,11 +153,11 @@ saveEventBtn.addEventListener('click', () => {
         storedEvent.datetimeStart = datetimeStart.value;
         storedEvent.datetimeEnd = datetimeEnd.value;
         storedEvent.description = eventDescription.value;
-        storedEvent.id = addedEvents.length;
+        storedEvent.id = Date.now();
 
         resetEventModal();
 
-        addEventToCalendar(storedEvent, addedEvents.length);
+        addEventToCalendar(storedEvent);
 
         updateEventsInStorage(storedEvent);
 
@@ -177,7 +169,7 @@ function addEventToCalendar(calendarEvent, index) {
     eventElement.classList.add('event__element');
 
 
-    eventElement.setAttribute('data-id', index);
+    eventElement.setAttribute('data-id', calendarEvent.id);
 
 
     function setEventPosition() {
@@ -224,8 +216,8 @@ function addEventToCalendar(calendarEvent, index) {
     if (isEventInCurrentWeek(calendarEvent)) {
         eventsMainSection.appendChild(eventElement);
     } else {
-        let element = document.querySelector("[data-id=" + `"${eventElement.getAttribute('data-id')}"` + "]");
-        //let element = document.querySelector("[data-id=" + `"${calendarEvent.id}"` + "]");
+        // let element = document.querySelector("[data-id=" + `"${eventElement.getAttribute('data-id')}"` + "]");
+        let element = document.querySelector(`[data-id="${calendarEvent.id}"]`);
         if (element != null) {
             element.remove();
         };
@@ -243,7 +235,7 @@ function updateEventsInStorage(calendarEvent) {
 function displayEventsFromStorage() {
     const eventsInStorageString = localStorage.getItem('eventsList');
     let eventsInStorage = eventsInStorageString ? JSON.parse(eventsInStorageString) : updateEventsInStorage(calendarEvent);
-    eventsInStorage.forEach((calendarEvent, index) => addEventToCalendar(calendarEvent, index, calendarEvent.id));
+    eventsInStorage.forEach((calendarEvent, index) => addEventToCalendar(calendarEvent));
 }
 
 function resetEventModal() {
