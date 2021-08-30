@@ -197,6 +197,13 @@ a:visited {
     justify-items: center;
 }
 
+.calendar__monthdays--highlighted {
+    background-color: #1A73E9;
+    border-radius: 50%;
+    color: white;
+    padding: 5px 10px 5px 10px;
+}
+
 .grid {
     display: flex;
     flex-direction: column;
@@ -207,6 +214,7 @@ a:visited {
 .grid__header {
     display: flex;
     flex-direction: column;
+    padding: 0px 15px 0px 50px;
 }
 
 .grid__header__weekdays {
@@ -214,8 +222,7 @@ a:visited {
     grid-template-columns: repeat(7, 1fr);
     justify-items: center;
     margin-bottom: 0;
-    padding-left: 50px;
-    padding-right: 14px;
+    padding-left: 0;
 }
 
 .grid__header__weekdays__li {
@@ -230,17 +237,18 @@ a:visited {
     border-image: linear-gradient(white 60%, lightgrey 40%) 1;
     border-style: solid;
     border-right: none;
-    padding: 10px 0px 10px 0px;
+    padding: 10px 0px 25px 0px;
 }
 
 .grid__header__monthdays__li--span {
-    background-color: #1A73E9;
+    background-color: #1a74e9;
     border-radius: 50%;
     color: white;
     padding: 5px 15px 5px 15px;
 }
 
 .grid__header__monthdays {
+    position: relative;
     display: grid;
     justify-items: center;
     grid-template-columns: repeat(7, 1fr);
@@ -248,8 +256,7 @@ a:visited {
     font-size: 26px;
     margin-top: 0;
     margin-bottom: 0px;
-    padding-left: 50px;
-    padding-right: 14px;
+    padding-left: 1px;
 }
 
 .grid__events {
@@ -278,7 +285,7 @@ a:visited {
 .sidebar__gmt {
     position: absolute;
     width: 55px;
-    top: 122px;
+    top: 137px;
     left: 240px;
     font-size: 12px;
     color: grey;
@@ -302,13 +309,16 @@ a:visited {
 }
 
 .events__item {
+    background-color: white;
     border: 1px solid lightgrey;
     border-bottom: none;
     border-right: none;
 }
 
 .event__element {
+    position: absolute;
     color: white;
+    background-color: #1A73E9;
     font-size: 10px;
     border-radius: 3px;
     border: 0.5px solid white;
