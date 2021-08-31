@@ -67,7 +67,7 @@
                 }
                 this.deleteEventBtn.addEventListener('click', deleteEventBtnCallback);
 
-            } else { return false };
+            } else { return false; }
         },
 
         makeGrid: function() {
@@ -242,11 +242,11 @@
     };
 
     Calendar.EventsMain.makeGrid();
-    Calendar.EventsMain.eventsMainSection.addEventListener('click', () => Calendar.EventsMain.openCreationModalInGrid(event));
+    Calendar.EventsMain.eventsMainSection.addEventListener('click', (event) => Calendar.EventsMain.openCreationModalInGrid(event));
     Calendar.EventsMain.createEventBtn.addEventListener('click', () => Calendar.EventsMain.openCreationModal());
     Calendar.EventsMain.saveEventBtn.addEventListener('click', () => Calendar.EventsMain.saveEvent());
-    Calendar.EventsMain.eventsMainSection.addEventListener('click', () => Calendar.EventsMain.openEventModal(event));
-    Calendar.EventsMain.monthdaysUL.addEventListener('click', () => Calendar.EventsMain.openEventModal(event));
+    Calendar.EventsMain.eventsMainSection.addEventListener('click', (event) => Calendar.EventsMain.openEventModal(event));
+    Calendar.EventsMain.monthdaysUL.addEventListener('click', (event) => Calendar.EventsMain.openEventModal(event));
     Calendar.EventsMain.exitEventModalInfoBtn.addEventListener('click', () => Calendar.EventsMain.resetEventModal());
     Calendar.EventsMain.exitEventModalBtn.addEventListener('click', () => Calendar.EventsMain.resetEventModal());
 
